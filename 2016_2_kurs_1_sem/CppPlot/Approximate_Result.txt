@@ -1,0 +1,53 @@
+1)
+General model Power1:
+     f(x) = a*x^b
+Coefficients (with 95% confidence bounds):
+       a =    8.62e-08  (1.652e-08, 1.559e-07)
+       b =       2.027  (1.97, 2.084)
+2)
+General model Power1:
+     f(x) = a*x^b
+Coefficients (with 95% confidence bounds):
+       a =   6.197e-09  (4.098e-09, 8.296e-09)
+       b =       2.214  (2.19, 2.238)
+	   
+3)
+General model Power1:
+     f(x) = a*x^b
+Coefficients (with 95% confidence bounds):
+       a =   0.0001092  (-4.352e-05, 0.0002618)
+       b =      0.9796  (0.8801, 1.079)
+	   
+4) 
+General model Power1:
+     f(x) = a*x^b
+Coefficients (with 95% confidence bounds):
+       a =   4.442e-06  (-2.471e-05, 3.359e-05)
+       b =       1.014  (0.5471, 1.48)
+	   
+5)
+General model Power1:
+     f(x) = a*x^b
+Coefficients (with 95% confidence bounds):
+       a =   3.556e-07  (1.925e-07, 5.187e-07)
+       b =       1.998  (1.966, 2.03)
+	   
+6) 
+General model Power1:
+     f(x) = a*x^b
+Coefficients (with 95% confidence bounds):
+       a =   4.902e-06  (-1.055e-07, 9.91e-06)
+       b =        1.92  (1.849, 1.992)
+	   
+7)
+General model Power1:
+     f(x) = a*x^b
+Coefficients (with 95% confidence bounds):
+       a =   1.491e-06  (7.603e-07, 2.221e-06)
+       b =       1.977  (1.942, 2.011)
+8)
+General model Power1:
+     f(x) = a*x^b
+Coefficients (with 95% confidence bounds):
+       a =   1.829e-15  (-2.827e-15, 6.485e-15)
+       b =       3.263  (3.085, 3.442)
