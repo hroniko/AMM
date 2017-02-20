@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1487598981 source:d:\netcracker\github\amm\2017_2_kurs_2_sem\cpp_labs\lab_1\main.cpp
+	<iostream>
+	<math.h>
+	<algorithm>
+
