@@ -60,7 +60,7 @@ int main()
     double mass[3] = {a,b,c};
     sort(mass, mass+3);
 
-    // 6. Выводим результат
+    // 6. /D:\NetCracker\GitHub\AMM\2017_2_kurs_2_sem\Cpp_Labs\Lab_1Выводим результат
     cout << "Длины сторон в порядке убывания: " << endl;
     for(int i = 0; i < 3; i++){
         cout << mass[i] << " ";
