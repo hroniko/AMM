@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1490796785 source:d:\netcracker\github\amm\2017_2_kurs_2_sem\cpp_labs\lab_4\main.cpp
+	<iostream>
+	<cstdlib>
+
