@@ -1,0 +1,17 @@
+# depslib dependency file v1.0
+1492612888 source:d:\netcracker\github\amm\2017_2_kurs_2_sem\cpp_labs\lab_6\main.cpp
+	<iostream>
+	<cstdlib>
+	<sstream>
+	<string>
+	<cstring>
+	<Windows.h>
+
+1494347149 source:d:\netcracker\github\amm\2017_2_kurs_2_sem\cpp_labs\lab_6_1\main.cpp
+	<iostream>
+	<cstdlib>
+	<sstream>
+	<string>
+	<cstring>
+	<Windows.h>
+

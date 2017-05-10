@@ -1,0 +1,8 @@
+# depslib dependency file v1.0
+1494449773 source:d:\netcracker\github\amm\2017_2_kurs_2_sem\cpp_labs\z31\main.cpp
+	<iostream>
+	<cstdlib>
+	<sstream>
+	<string>
+	<cstring>
+

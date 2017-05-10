@@ -808,7 +808,7 @@ procedure RebuildTree(rootOld: tree_ptr; rootNew: tree_ptr); // Передаем указате
 begin
   // Сначала нужно разорвать на два дерева:
   TreeToPartition(rootOld, rootNew);
-  BalancedDepthWeightHeight(rootOld, 0, 0); // Пересчитываем все глубины и смещения для оставшегося куска строго дерева
+  BalancedDepthWeightHeight(rootOld, 0, 0); // Пересчитываем все глубины и смещения для оставшегося куска старого дерева
   BalancedDepthWeightHeight(rootNew, 0, 0); // Пересчитываем все глубины и смещения для нового дерева
   // А затем переписать из оставшегося куска старого дерева в новое дерево все оставшиеся узлы
   Rebuild(rootOld, rootNew);

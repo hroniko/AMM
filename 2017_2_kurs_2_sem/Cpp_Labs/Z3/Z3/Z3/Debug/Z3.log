@@ -1,0 +1,5 @@
+﻿  Z3.cpp
+d:\netcracker\github\amm\2017_2_kurs_2_sem\cpp_labs\z3\z3\z3\z3.cpp(31): warning C4018: <: несоответствие типов со знаком и без знака
+d:\netcracker\github\amm\2017_2_kurs_2_sem\cpp_labs\z3\z3\z3\z3.cpp(32): warning C4554: &: проверьте порядок применения операторов на наличие ошибки; для четкого задания порядка используйте скобки
+  Z3.vcxproj -> D:\NetCracker\GitHub\AMM\2017_2_kurs_2_sem\Cpp_Labs\Z3\Z3\Debug\Z3.exe
+  Z3.vcxproj -> D:\NetCracker\GitHub\AMM\2017_2_kurs_2_sem\Cpp_Labs\Z3\Z3\Debug\Z3.pdb (Full PDB)
