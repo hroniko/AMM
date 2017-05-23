@@ -32,7 +32,9 @@ static string convert(char *&stroka) {
 		if (stroka[i] >= '0' & stroka[i] <= '9') {
 			substroka += stroka[i];
 		}
-		else { // иначе последовательность цифр кончилась, проверим субстроку на во
+		else { // иначе последовательность цифр кончилась, проверим субстроку на возможность преобразовать в число
+			// но сначала проверим, а вдруг у нас использовано отрицательное число
+			if (stroka[i] == '-') return "Числа не могут быть отрицательными! Пожалуйста, повторите ввод";
 			if (substroka.size() > 0) {
 				// Преобразуем к инту:
 				int n;
@@ -54,6 +56,10 @@ static string convert(char *&stroka) {
 			}
 		}
 	}
+
+	// 2+) Проверки на числа:
+	if ( (massiv[1] < 1) || (massiv[1] > 31) ) return "Неверно задан день месяца: " + toString(massiv[1]) + ". Повторите ввод";
+	if ((massiv[2] < 0) || (massiv[2] > 99)) return "Неверно задан год: " + toString(massiv[2]) + ". Повторите ввод";
 
 
 	// 3) Вычисляем, какой нам нужен месяц:
@@ -97,10 +103,11 @@ static string convert(char *&stroka) {
 		sub1 = "Декабрь";
 		break;
 	default:
-		sub1 = "Январь";
+		return "Неверно задан номер месяца: " + toString(massiv[0]) + ". Повторите ввод";
 	}
 
-	return (sub1 + " " + toString(massiv[1]) + ", 19" + toString(massiv[2]));
+	
+	return (sub1 + " " + toString(massiv[1]) + ", 19" + ( (massiv[2] > 9) ? toString(massiv[2]) : "0" + toString(massiv[2])) );
 }
 
 
