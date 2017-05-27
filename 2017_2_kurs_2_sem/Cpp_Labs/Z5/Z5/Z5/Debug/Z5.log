@@ -1,0 +1,7 @@
+﻿  Z5.cpp
+d:\netcracker\github\amm\2017_2_kurs_2_sem\cpp_labs\z5\z5\z5\z5.cpp(100): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(119): note:  см. объявление "strcpy"
+d:\netcracker\github\amm\2017_2_kurs_2_sem\cpp_labs\z5\z5\z5\z5.cpp(104): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\string.h(119): note:  см. объявление "strcpy"
+  Z5.vcxproj -> D:\NetCracker\GitHub\AMM\2017_2_kurs_2_sem\Cpp_Labs\Z5\Z5\Debug\Z5.exe
+  Z5.vcxproj -> D:\NetCracker\GitHub\AMM\2017_2_kurs_2_sem\Cpp_Labs\Z5\Z5\Debug\Z5.pdb (Full PDB)
