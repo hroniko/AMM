@@ -23,6 +23,10 @@ struct Node {
 	Node * left = NULL; // Указатель на левого потомка
 	Node * right = NULL; // Указатель на левого потомка
 	int height = NULL; // Высота узла (расстояние в дугах от узла до наиболее удаленного потомка)
+	int l_height = NULL; // Короткая высота слева - расстояние до ближайшего узла слева (измеряется в дугах)
+	int r_height = NULL; // Короткая высота слева - расстояние до ближайшего узла слева (измеряется в дугах)
+	int l_sum = NULL; // Сумма ключей узлов по минимальному пути слева
+	int r_sum = NULL; // Сумма ключей узлов по минимальному пути справа
 };
 
 Node *tmpN = NULL;
@@ -42,6 +46,12 @@ int sumAllKey(Node *&v);
 Node* rightRemoveKey(Node *&p, int k);
 Node* findMinNode(Node *&p);
 Node* removeMinNode(Node *&p);
+int balancedRLHeight(Node *&v);
+int balancedSum(Node *&v);
+void printMinWay(Node *&node);
+void printMinWay2(Node *&node);
+Node* findMediane(Node *&p, int len);
+Node* findMediane2(Node *&p, int len);
 
 
 // Основная программа
@@ -80,6 +90,9 @@ int main(){
 		}
 	}
 
+	balancedRLHeight(root); // И обновляем информацию о высотах 
+	balancedSum(root); // И обновляем информацию о суммах
+
 
 	// 3) Печатаем исходный список:
 	cout << "Исходное дерево (прямой левый обход): " << endl;
@@ -91,14 +104,34 @@ int main(){
 	Node * root2 = findNodeBetween_MinLenWay(root);
 	cout << "Узел, через который проходит искомый путь: " << root2->key << endl;
 
-	// 5) Удаляем правым удалением его
-	root = rightRemoveKey(root, root2->key);
-
-
-	// 6) Печатаем новый список (после удаления):
-	cout << "Новое дерево (прямой левый обход): " << endl;
-	printFrontOrderLeftTree(root); // Выводим на консоль прямым левым обходом наше дерево
+	// 5) Печатаем минимальный путь:
+	cout << "Минимальный путь: " << endl;
+	printMinWay(root2);
 	cout << endl;
+
+	// 6) Проверяем, можно ли удалять вершину из пути (можно, еслм вершин нечетное количество, в этом случае есть медиана)
+	int len = root2->l_height + root2->r_height; // Определяем длину пути
+	cout << "Длина минимального пути: " << len << " дуг (" << len+1 << " вершин)" << endl;
+	if ((len + 1) % 2 == 0) {
+		cout << "Четное количество вершин, медианы нет, удалять нечего" << endl;
+	}
+	else {
+		// Иначе ищем и удаляем медиану		
+		root2 = findMediane(root2, len);
+		cout << "Удаляем медиану " << root2->key << " правым удалением" << endl;
+
+		// 7) Удаляем правым удалением
+		root = rightRemoveKey(root, root2->key);
+		balancedDepthWeightHeight(root, 0, 0); // И обновляем информацию о высотах
+		balancedRLHeight(root); // И обновляем информацию о высотах 
+		balancedSum(root); // И обновляем информацию о суммах
+
+
+		 // 8) Печатаем новый список (после удаления):
+		cout << "Новое дерево (прямой левый обход): " << endl;
+		printFrontOrderLeftTree(root); // Выводим на консоль прямым левым обходом наше дерево
+		cout << endl;
+	}
 
 
 
@@ -170,11 +203,73 @@ int fixHeight(Node *&v) {
 	}
 }
 
+// !!! Основная функция пересчета минимальных расстояний до листьев слева и справа от узла
+int balancedRLHeight(Node *&v) {
+	if (v == NULL) return 0; // Если узла нет, возвращаем ноль
+	// Иначе считаем слева и справа:
+	v->l_height = balancedRLHeight(v->left); 
+	v->r_height = balancedRLHeight(v->right);
+
+	if (v->l_height == 0 && v->r_height != 0) { // На случай, если один из листов нулевой, а второй есть, возвращаем высоту того, который есть, а не нулевого
+		return v->r_height + 1;
+	}
+
+	if (v->l_height != 0 && v->r_height == 0) { // На случай, если один из листов нулевой, а второй есть, возвращаем высоту того, который есть, а не нулевого
+		return v->l_height + 1;
+	}
+
+	// И остались варианты, когда либо оба нулевые, либо оба ненулевые
+	if (v->l_height <= v->r_height) {
+		return v->l_height + 1; 
+	}
+	else {
+		return v->r_height + 1;
+	}
+}
+
+// !!! Основная функция пересчета сумм ключей узлов минимальных путей, проходящих через данную вершину
+int balancedSum(Node *&v) {
+	if (v == NULL) return 0; // Если узла нет, возвращаем ноль
+	// Иначе считаем слева и справа:
+	int l_sum = balancedSum(v->left);
+	int r_sum = balancedSum(v->right);
+
+	if (v->l_height == 0 && v->r_height == 0) { // На случай, если оба листа нулевые
+		v->l_sum = 0;
+		v->r_sum = 0;
+		return v->key;
+	}
+
+	if (v->l_height == 0 && v->r_height != 0) { // На случай, если один из листов нулевой, а второй есть, возвращаем сумму ключей того, который есть, а не нулевого
+		v->l_sum = 0;
+		v->r_sum = r_sum;
+		return v->l_sum  + v->r_sum + v->key;
+	}
+
+	if (v->l_height != 0 && v->r_height == 0) { // На случай, если один из листов нулевой, а второй есть, возвращаем сумму ключей того, который есть, а не нулевого
+		v->l_sum = l_sum;
+		v->r_sum = 0;
+		return v->l_sum + v->r_sum + v->key;
+	}
+
+	// И остались варианты, когда оба ненулевые
+	if (v->l_height <= v->r_height) {
+		v->l_sum = l_sum;
+		v->r_sum = r_sum;
+		return v->l_sum + 0 + v->key;
+	}
+	else {
+		v->l_sum = l_sum;
+		v->r_sum = r_sum;
+		return 0 + v->r_sum + v->key;
+	}
+}
+
 
 // 17) Основная функция поиска узла, через который проходит путь МИНИМАЛЬНОЙ длины
 Node* findNodeBetween_MinLenWay(Node *&v) {
-	tmpN = v;   // Запоминаем в глобальной переменной указатель на NIL
-	tmpL = 10000; // Считаем длину максимального пути равной 0
+	tmpN = v;   // Запоминаем в глобальной переменной указатель на NULL
+	tmpL = 10000; // Считаем длину максимального пути равной 10000
 	tmpS = 10000; // Запоминаем в глобальной переменной сумму ВСЕХ ключей, пусть она будет очень  большой
 
 	findNode_MinLenWay(v);  // И запускаем поиск узла с лучшими параметрами
@@ -184,26 +279,57 @@ Node* findNodeBetween_MinLenWay(Node *&v) {
 
 // 18) Вспомогательная процедура обхода дерева и поиска узла, через который проходит путь МИНИМАЛЬНОЙ длины
 void findNode_MinLenWay(Node *&v) {
-	int len = minLenWay(v);
-	if ((v != NULL) && (len > 1)) { 
-		if (len < tmpL) { // Если она меньше уже известной, то
-			tmpN = v;
-			tmpL = len;
-			tmpS = sumAllKey_MinLenWay(v);
+	if (v == NULL) return; // Если пустой узел, выходим
+	// Иначе продолжаем
+	// Учитываем только те узлы, которы нам подходят
+	if (v->l_height > 0 && v->r_height > 0) { // А именно те, у которых есть пути слева и справа
+		int len = v->l_height + v->r_height + 1; // Рассчитываем длину пути в дугах
+		int sum = v->l_sum + v->r_sum + v->key; // Рассчитываем сумму значащих ключей
+
+		if (len < tmpL) { // Если длина пути меньше уже известной, то
+			tmpN = v; // запоминаем текущую вершину
+			tmpL = len; // обновляем информацию о минимальном длине пути
+			tmpS = sum; // обновляем информацию о сумме значащих ключей
 		}
 
-		if (len == tmpL) { // если же она равна уже известной, то нужно проверить, у которой сумма ВСЕХ ключей меньше
-			if (sumAllKey_MinLenWay(v) < tmpS) { // И если у новой сумма ВСЕХ меньше, она и становится временной
+		if (len == tmpL) { // если же она равна уже известной, то нужно проверить, у которой из них сумма значащих ключей меньше
+			if (sum < tmpS) { // И если у новой сумма ключей меньше, она и становится текущей
 				tmpN = v;
 				tmpL = len;
-				tmpS = sumAllKey_MinLenWay(v);
+				tmpS = sum;
 			}
 		}
 		findNode_MinLenWay(v->left); // Идем вниз влево
 		findNode_MinLenWay(v->right); // Идем вниз вправо
+
 	}
+
 }
 
+
+/*
+// 18) Вспомогательная процедура обхода дерева и поиска узла, через который проходит путь МИНИМАЛЬНОЙ длины
+void findNode_MinLenWay(Node *&v) {
+int len = minLenWay(v);
+if ((v != NULL) && (len > 1)) {
+if (len < tmpL) { // Если она меньше уже известной, то
+tmpN = v;
+tmpL = len;
+tmpS = sumAllKey_MinLenWay(v);
+}
+
+if (len == tmpL) { // если же она равна уже известной, то нужно проверить, у которой сумма ВСЕХ ключей меньше
+if (sumAllKey_MinLenWay(v) < tmpS) { // И если у новой сумма ВСЕХ меньше, она и становится временной
+tmpN = v;
+tmpL = len;
+tmpS = sumAllKey_MinLenWay(v);
+}
+}
+findNode_MinLenWay(v->left); // Идем вниз влево
+findNode_MinLenWay(v->right); // Идем вниз вправо
+}
+}
+*/
 
 
 // 13) ОСНОВНАЯ Функция определения МИНИМАЛЬНОЙ длины пути, проходящего через заданный узел
@@ -319,8 +445,62 @@ Node* removeMinNode(Node *&p) {
 void printFrontOrderLeftTree(Node *&node) {
 	if (node != NULL) {
 		cout << (node->key) << "  ";
+		// cout << "\n" << (node->key) << "  ";
 		// cout << "Высота " << (node->height) << "  ";
+		// cout << "Высота L " << (node->l_height) << "  ";
+		// cout << "Высота R " << (node->r_height) << "  ";
+		// cout << "Сумма L " << (node->l_sum) << "  ";
+		// cout << "Сумма R " << (node->r_sum) << "  ";
 		printFrontOrderLeftTree(node->left);
 		printFrontOrderLeftTree(node->right);
 	}
+}
+
+// Метод прямого левого обхода дерева с выводом значащих ключей в консоль (вывод искомого минимального пути)
+void printMinWay(Node *&node) {
+	if (node != NULL) {
+		printMinWay2(node->left);
+		cout << (node->key) << "  ";
+		printMinWay2(node->right);
+	}
+}
+
+void printMinWay2(Node *&node) {
+	if (node != NULL) {
+		
+
+		if (node->l_height <= node->r_height) {
+			printMinWay2(node->left);
+		}
+
+		cout << (node->key) << "  ";
+
+		if (node->l_height > node->r_height) {
+			printMinWay2(node->right);
+		}
+		
+	}
+}
+
+
+
+// !!! Метод поиска медианы
+Node* findMediane(Node *&p, int len) {
+	if ((len + 1) % 2 == 0) return NULL;
+	if (p == NULL) return NULL;
+	if (p->l_height == p->r_height) return p;
+
+	if (p->l_height > p->r_height) {
+		return findMediane2(p->left, len / 2);
+	}
+	else {
+		return findMediane2(p->right, len / 2);
+	}
+}
+
+Node* findMediane2(Node *&p, int len) {
+	if (p == NULL) return NULL;
+	int tmp = (p->l_height <= p->r_height) ? p->l_height : p->r_height;
+	if (tmp == len) return p;
+	return (p->l_height <= p->r_height) ? findMediane2(p->left, len) : findMediane2(p->right, len);
 }
