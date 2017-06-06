@@ -50,6 +50,7 @@ int balancedRLHeight(Node *&v);
 int balancedSum(Node *&v);
 void printMinWay(Node *&node);
 void printMinWay2(Node *&node);
+void printMinWay3(Node *&node);
 Node* findMediane(Node *&p, int len);
 Node* findMediane2(Node *&p, int len);
 void printTree(Node *&node, int h);
@@ -486,7 +487,7 @@ void printMinWay(Node *&node) {
 	if (node != NULL) {
 		printMinWay2(node->left);
 		cout << (node->key) << "  ";
-		printMinWay2(node->right);
+		printMinWay3(node->right);
 	}
 }
 
@@ -502,6 +503,25 @@ void printMinWay2(Node *&node) {
 
 		if (node->l_height > node->r_height) {
 			printMinWay2(node->right);
+		}
+
+	}
+}
+
+void printMinWay3(Node *&node) {
+	if (node != NULL) {
+		cout << (node->key) << "  ";
+
+		if (node->l_height <= node->r_height) {
+			printMinWay3(node->left);
+		}		
+
+		if (node->l_height > node->r_height) {
+			printMinWay3(node->right);
+		}
+
+		if (node->r_height == 0) {
+			printMinWay3(node->left);
 		}
 
 	}
